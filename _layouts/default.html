@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% if page.title %}{{ page.title }} – {% endif %}{{ site.name }}</title>
+
+    {% include meta.html %}
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
+
+    {% if page.mathjax %}
+      <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [["$","$"], ["\\(","\\)"]]
+        },
+        jax: ["input/TeX", "output/HTML-CSS"],
+        
+        TeX: {
+          extensions: ["AMSmath.js"],
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        "HTML-CSS": {
+          scale: 85
+        },
+        displayAlign: "left"
+      });
+      MathJax.Hub.Register.StartupHook("TeX Jax Ready", function () {
+        var MML = MathJax.ElementJax.mml;
+        var TEX = MathJax.InputJax.TeX;
+        TEX.Definitions.macros.bfrac = "myBevelFraction";
+        TEX.Parse.Augment({
+          myBevelFraction: function (name) {
+            var num = this.ParseArg(name);
+            var den = this.ParseArg(name);
+            this.Push(MML.mfrac(num, den).With({ bevelled: true }));
+          }
+        });
+      });
+      </script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML.js"></script>
+      {% endif %}
+	  
+<style type="text/css">
+table.gridtable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+</style>
+	  
+        <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+   </head>
+ 
+   <body>
+     <div class="wrapper-masthead">
+       <div class="container">
+         <header class="masthead clearfix">
+
+           <div class="site-info">
+             <h1 class="site-name"><a href="{{ site.url }}">{{ site.name }}</a></h1>
+             <p class="site-description">{{ site.description }}</p>
+            <p></p>
+               <a href="{{    site.baseurl }}/">Portfolio  |   </a>
+               <a href="{{    site.baseurl }}/about">About  |   </a>
+               <a href="{{    site.baseurl }}/resume">Resume     </a>
+           </div>
+           
+            <div class="svg-icons">
+              {% include svg-icons.html %}
+            </div>
+
+          
+          </header>
+        </div>
+      </div>
+ 
+     <div id="main" role="main" class="container">
+       {{ content }}
+     </div>
+
+     {% include analytics.html %}
+   </body>
+ </html>
+
