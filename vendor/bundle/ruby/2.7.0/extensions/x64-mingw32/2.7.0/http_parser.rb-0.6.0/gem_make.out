@@ -1,0 +1,17 @@
+current directory: D:/Git/Page/awnt.github.io/vendor/bundle/ruby/2.7.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
+D:/Tools/Ruby27x64/bin/ruby.exe -I D:/Tools/Ruby27x64/lib/ruby/2.7.0 -r ./siteconf20210404-27452-4dn7ab.rb extconf.rb
+creating Makefile
+
+current directory: D:/Git/Page/awnt.github.io/vendor/bundle/ruby/2.7.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
+make "DESTDIR=" clean
+
+current directory: D:/Git/Page/awnt.github.io/vendor/bundle/ruby/2.7.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
+make "DESTDIR="
+generating ruby_http_parser-x64-mingw32.def
+compiling ruby_http_parser.c
+compiling ryah_http_parser.c
+linking shared-object ruby_http_parser.so
+
+current directory: D:/Git/Page/awnt.github.io/vendor/bundle/ruby/2.7.0/gems/http_parser.rb-0.6.0/ext/ruby_http_parser
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20210404-27452-121djbr
