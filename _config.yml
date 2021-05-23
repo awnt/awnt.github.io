@@ -1,4 +1,4 @@
-title:              Awasada Nitisatien
+title:              AWAS
 email:              awasada.nt@gmail.com
 description:        Data Blog and Portfolio
 author:             AWNT
@@ -16,7 +16,10 @@ linkedin_username:
 google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
 
 # Build settings
-markdown:           kramdown
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 paginate:           5
 paginate_path:      "/posts/page:num/"
 plugins:
