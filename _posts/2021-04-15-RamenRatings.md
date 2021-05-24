@@ -5,7 +5,7 @@ subtitle: "python"
 background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marble-background.jpg'
 ---
 ## Data Description<br />
-  This project is about exploring the world of instant noodles.Based on three-thousan reviewers' opinions who rated the ramens related to Brands,taste,packaging style and country.I've got dataset from [THE RAMEN RATER website](https://www.theramenrater.com/) lastest version updated on January 2021--so thankful with that.<br />
+  This project is about exploring the world of instant noodles.Based on three-thousan reviewers' opinions who rated the ramens related to Brands,taste,packaging style and country.I've got dataset from [THE RAMEN RATER website](https://www.theramenrater.com/){:target="_blank" rel="noopener"} lastest version updated on January 2021--so thankful with that.<br />
 
 ## Questions <br />
 - Which country and brand is the biggest in this market?

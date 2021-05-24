@@ -13,7 +13,7 @@ In 2018, they released an interesting report which shows that the number of TV s
 Integrating this dataset with other external datasets such as IMDB ratings, rotten tomatoes can also provide many interesting findings.
 
 
-[visit kaggle dataset](https://www.kaggle.com/shivamb/netflix-shows)
+[visit kaggle dataset](https://www.kaggle.com/shivamb/netflix-shows){:target="_blank" rel="noopener"}
 
 **Objective** <br />
 - Data manipulate
