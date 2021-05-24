@@ -113,7 +113,7 @@ Give the big picture about remen <br />
 
 #### Data Cleaning 
 There is no missing data in 3702 entries but found some strange on 'Stars' columns.
-Refer to that column, while others are numerical , the 'Unrated' one will not be useful on this field. So,I decide to replace 'Unrated' value with '0' value and turn it to float.
+Refer to the column, while others are numerical , the 'Unrated' one appears as the nominal. So,I decide to replace 'Unrated' value with '0' value and turn it to float.
 
 ```python
 df.info()
@@ -146,7 +146,8 @@ df.Stars=df.Stars.astype(float).round(1)
 <br />
 #### Country
 
-Ranking average country rating 
+Average country stars ranking 
+
 ```python
 country_s=df.groupby('Country').agg({'Country':'count','Stars':'mean'})
 country_s=country_s.rename({'Country':'Total'},axis=1)
@@ -243,7 +244,10 @@ country_s = country_s.sort_values(by =['Total','Stars'],ascending = False).reset
 </table>
 </div>
 
+<br />
 
+For top ten country , Japan is the biggest in the instant noodles market follow with US and South Korea.Malaysia got 4.2 stars which is the most flavorable country out of ten.The least country belong to Thailand with 3.4 stars.At this point,It concerns that the total amount of noodles is very wide range between maximun and minimum.It could be affected the average stars.
+<br />
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -312,7 +316,7 @@ country_s = country_s.sort_values(by =['Total','Stars'],ascending = False).reset
 </div>
 
 
-
+<br />
 
 ```python
 sns.barplot(x='Country',y='Total',data=country_s[0:10])
@@ -338,6 +342,7 @@ plt.show()
     
 
 
+<br />
 
 ```python
 annotations=[i for i in country_s[0:9]['Country']]
