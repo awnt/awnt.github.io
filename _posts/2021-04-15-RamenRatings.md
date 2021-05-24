@@ -4,16 +4,35 @@ title: "Ramen Ratings"
 subtitle: "python"
 background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marble-background.jpg'
 ---
+## Data Description<br />
+  This project is about exploring the world of instant noodles.Based on three-thousan reviewers' opinions who rated the ramens related to Brands,taste,packaging style and country.I've got dataset from [THE RAMEN RATER website](https://www.theramenrater.com/) lastest version updated on January 2021--so thankful with that.<br />
 
-```python
-import pandas as pd
-import numpy as np
-from matplotlib import pyplot as plt
-import seaborn as sns
-sns.set_palette('Set2')
-```
+## Questions <br />
+- Which country and brand is the biggest in this market?
+- How manay kind of packaging and which one is popular?
+- What are trending flavours?
+- Does the style of the product affects the score directly, does a certain kind of product style means a lower score? 
+- Is there a significant difference between brand average scores?
+
+### Tools <br />
+- Python : pandas , numpy , matplotlib , seaborn
+- Descriptive 
+- Statistics test
+- Word cloud , NMF
+
+## Conclusion <br />
+<br />
+<br />
+
 #### Dataframe
- 
+The data consists of 5 columns : <br />
+1.Review : Reviewer No. <br />
+2.Brand : Ramen brand <br />
+3.Variety : Describing words including taste , flavour ,noodle style,etc.
+Give the big picture about remen <br />
+4.Style : Packaging style <br />
+5.Stars : as known as Ratings <br />
+
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -90,11 +109,16 @@ sns.set_palette('Set2')
 </table>
 </div>
 
+<br />
+<br />
 
 #### Data Cleaning 
+There is no missing data in 3702 entries but found some strange on 'Stars' columns.
+Refer to that column, while others are numerical , the 'Unrated' one will not be useful on this field. So,I decide to replace 'Unrated' value with '0' value and turn it to float.
 
 ```python
 df.info()
+df.Stars.unique()
 ```
 
     <class 'pandas.core.frame.DataFrame'>
@@ -110,28 +134,17 @@ df.info()
      5   Stars     3702 non-null   object
     dtypes: int64(1), object(5)
     memory usage: 173.7+ KB
-    
-
-
-```python
-df.Stars.unique()
-```
-
-
-
 
     array([5, 3.5, 4.5, 4, 3.75, 4.25, 3, 3.25, 4.75, 2.5, 2, 0.75, 0, 1.25,
            2.75, 0.5, 1.5, 2.25, 1, 0.25, 1.75, 'Unrated', 1.1, 2.1, 0.9, 3.1,
            4.125, 3.125, 2.125, 2.9, 0.1, 2.8, 3.7, 3.4, 3.6, 2.85, 2.3, 3.2,
            3.65, 1.8], dtype=object)
 
-
-Replace 'Unrated' with 0 and change to float
 ```python
 df.Stars.replace(to_replace={'Unrated':0},inplace=True)
 df.Stars=df.Stars.astype(float).round(1)
 ```
-
+<br />
 #### Country
 
 Ranking average country rating 
