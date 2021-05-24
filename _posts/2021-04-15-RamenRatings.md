@@ -9,20 +9,19 @@ background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marbl
 
 ## Questions <br />
 - Which country and brand is the biggest in this market?
-- How manay kind of packaging and which one is popular?
-- What are trending flavours?
-- Does the style of the product affects the score directly, does a certain kind of product style means a lower score? 
-- Is there a significant difference between brand average scores?
+- How many kind of packaging and which one is popular?
+- What are trending tastes and flavours?
+
 
 ### Tools <br />
 - Python : pandas , numpy , matplotlib , seaborn
 - Descriptive 
-- Statistics test
 - Word cloud , NMF
 
 ## Conclusion <br />
 <br />
 <br />
+
 
 #### Dataframe
 The data consists of 5 columns : <br />
@@ -1286,4 +1285,8 @@ for i in range(0,15):
     soba        0.187999
     Name: 14, dtype: float64
     
-    
+<br />
+<br />
+
+## Future Improvement ##
+Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data is apparently nonparametric with its skewness and free distribution.So,go through the Kruskal-Wallis.
