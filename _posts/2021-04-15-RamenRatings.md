@@ -4,8 +4,8 @@ title: "Ramen Ratings"
 subtitle: "python"
 background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marble-background.jpg'
 ---
-## Data Description<br />
-  This project is about exploring the world of instant noodles.Based on three-thousan reviewers' opinions who rated the ramens related to Brands,taste,packaging style and country.I've got dataset from [THE RAMEN RATER website](https://www.theramenrater.com/){:target="_blank" rel="noopener"} lastest version updated on January 2021--so thankful with that.<br />
+## Description <br />
+  This project is about to exploring the world of instant ramen.Based on Hans Lienesch's opinion which collected in 'The Big List' dataset. There are 3700 varieties of ramen (up to January 2021)  rated according to brand,taste,packaging style and country. His website [THE RAMEN RATER](https://www.theramenrater.com/){:target="_blank" rel="noopener"} and [youtube channel](https://www.youtube.com/channel/UCoO7I0stFzbrcLbHxZ7tOFA){:target="_blank" rel="noopener"} is so touching for the person who craving for ramens. Anyway,Thank you very much Hans.<br />
 
 ## Questions <br />
 - Which country and brand is the biggest in this market?
@@ -23,7 +23,7 @@ background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marbl
 <br />
 
 
-#### Dataframe
+#### Data Description and Preparation
 The data consists of 5 columns : <br />
 1.Review : Reviewer No. <br />
 2.Brand : Ramen brand <br />
@@ -108,12 +108,11 @@ Give the big picture about remen <br />
 </table>
 </div>
 
-<br />
-<br />
 
-#### Data Cleaning 
-There is no missing data in 3702 entries but found some strange on 'Stars' columns.
-Refer to the column, while others are numerical , the 'Unrated' one appears as the nominal. So,I decide to replace 'Unrated' value with '0' value and turn it to float.
+
+
+There is no missing value in 3702 entries but found some differences on 'Stars' column.
+Refer to the column apparently is an object type.As I expected it to be a numerical one,I decide to transform the data to float.Yes,after I to get rid of the 'Unrated' values that I willave turned to '0'. 
 
 ```python
 df.info()
@@ -144,9 +143,12 @@ df.Stars.replace(to_replace={'Unrated':0},inplace=True)
 df.Stars=df.Stars.astype(float).round(1)
 ```
 <br />
-#### Country
+#### Exploration
 
-Average country stars ranking 
+##### >> Country
+
+For top 10 countries , Japan is the biggest in the market follow with US and South Korea.Malaysia got 4.2 stars which is the most highest score. The least one belong to Thailand with 3.4 stars.At this point,It concerns that the total amount of noodles is very wide range between maximun and minimum.It could be affected the average stars.
+
 
 ```python
 country_s=df.groupby('Country').agg({'Country':'count','Stars':'mean'})
@@ -244,9 +246,7 @@ country_s = country_s.sort_values(by =['Total','Stars'],ascending = False).reset
 </table>
 </div>
 
-<br />
 
-For top ten country , Japan is the biggest in the instant noodles market follow with US and South Korea.Malaysia got 4.2 stars which is the most flavorable country out of ten.The least country belong to Thailand with 3.4 stars.At this point,It concerns that the total amount of noodles is very wide range between maximun and minimum.It could be affected the average stars.
 <br />
 <div>
 <style scoped>
@@ -364,8 +364,10 @@ plt.show()
 ![png](/img/posts/ramen/output_12_0.png)
     
 
-#### Brand
-Ranking average brand rating
+##### >> Brand
+First prize belongs to 'Nissin' which is leading to 476 different flavours with 3.9 rating star.Marucha,Nongshim,Myojo and Samyang are in ordering with 3.7,4.0,3.9 and 4.1 .Such a very little different point among the top 5.
+
+
 ```python
 brand_s=df.groupby('Brand').agg({'Brand':'count','Stars':'mean'})
 brand_s=brand_s.rename({'Brand':'Total'},axis=1)
