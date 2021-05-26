@@ -112,7 +112,7 @@ Give the big picture about remen <br />
 
 
 There is no missing value in 3702 entries but found some differences on 'Stars' column.
-Refer to the column apparently is an object type.As I expected it to be a numerical one,I decide to transform the data to float.Yes,after I to get rid of the 'Unrated' values that I will turn them to '0'. 
+Refer to the column apparently is an object type.As I expected it to be a numerical one,I decide to transform the data to float.Yes,after I get rid of the 'Unrated' values that I will turn them to '0'. 
 
 ```python
 df.info()
