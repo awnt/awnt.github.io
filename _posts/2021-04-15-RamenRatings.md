@@ -4,8 +4,8 @@ title: "Ramen Ratings"
 subtitle: "python"
 background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marble-background.jpg'
 ---
-## Description <br />
-  This project is about to exploring the world of instant ramen.Based on Hans Lienesch's opinion which collected in 'The Big List' dataset. There are 3700 varieties of ramen (up to January 2021)  rated according to brand,taste,packaging style and country. His website [THE RAMEN RATER](https://www.theramenrater.com/){:target="_blank" rel="noopener"} and [youtube channel](https://www.youtube.com/channel/UCoO7I0stFzbrcLbHxZ7tOFA){:target="_blank" rel="noopener"} is so touching for the person who craving for ramens. Anyway,Thank you very much Hans.<br />
+
+  This project is about to exploring the world of instant ramen.Based on Hans Lienesch's opinion which collected in 'The Big List' dataset. There are 3700 varieties of ramen (up to January 2021)  rated according to brand,taste,packaging style and country. His website [THE RAMEN RATER](https://www.theramenrater.com/){:target="_blank" rel="noopener"} and [youtube channel](https://www.youtube.com/channel/UCoO7I0stFzbrcLbHxZ7tOFA){:target="_blank" rel="noopener"} is so touching for the ramen-craving person.<br />
 
 ## Questions <br />
 - Which country and brand is the biggest in this market?
@@ -112,7 +112,7 @@ Give the big picture about remen <br />
 
 
 There is no missing value in 3702 entries but found some differences on 'Stars' column.
-Refer to the column apparently is an object type.As I expected it to be a numerical one,I decide to transform the data to float.Yes,after I to get rid of the 'Unrated' values that I willave turned to '0'. 
+Refer to the column apparently is an object type.As I expected it to be a numerical one,I decide to transform the data to float.Yes,after I to get rid of the 'Unrated' values that I will turn them to '0'. 
 
 ```python
 df.info()
@@ -363,9 +363,33 @@ plt.show()
     
 ![png](/img/posts/ramen/output_12_0.png)
     
+```python
+annotations=[i for i in country_s[0:10]['Country']]
+plt.figure(figsize=(8,6))
+plt.scatter('Stars','Total',
+           s='Total',
+           data=country_s[0:10]) 
+plt.xlabel('Ratings')
+plt.ylabel('Total')
+for i,label in enumerate(annotations):
+    plt.text(country_s.Stars[i],country_s.Total[i],label,color='blue', verticalalignment='bottom',  bbox=dict(facecolor='w',edgecolor = 'w',alpha=0.4))
+plt.show()
+```
+![png](/img/posts/ramen/Top10country.png)
+
+
+
+```python
+sns.histplot(country_s.Stars,bins=10,kde=True)
+plt.title('Country vs Stars Distribution')
+plt.show()
+```
+![png](/img/posts/ramen/dist_country.png)
+
+
 
 ##### >> Brand
-First prize belongs to 'Nissin' which is leading to 476 different flavours with 3.9 rating star.Marucha,Nongshim,Myojo and Samyang are in ordering with 3.7,4.0,3.9 and 4.1 .Such a very little different point among the top 5.
+'Nissin' has the largest number of flavours far from others with 476 and average rating at 3.9.Marucha,Nongshim,Myojo and Samyang are in a row.The four have nearly amount around 120 along with rating 3.7,4.0,3.9 and 4.1 respectively.We can see that such a slighty different point among the top 5.Anyways,It might meaning a lot if we seriously discover for a really good taste one.
 
 
 ```python
@@ -551,7 +575,31 @@ plt.show()
 ![png](/img/posts/ramen/output_17_0.png)
     
 
+```python
+annotations=[i for i in brand_s[0:10]['Brand']]
+plt.figure(figsize=(8,6))
+plt.scatter('Stars','Total',
+           s='Total',
+           data=brand_s[0:10])
+plt.xlabel('Ratings')
+plt.ylabel('Total')
+for i,label in enumerate(annotations):
+    plt.text(brand_s.Stars[i],brand_s.Total[i],label,color='blue', verticalalignment='bottom',  bbox=dict(facecolor='w',edgecolor = 'w',alpha=0.4))
+plt.show()
 
+```
+
+![png](/img/posts/ramen/Top10brand.png)
+
+```python
+sns.histplot(brand_s.Stars,bins=10,kde=True)
+plt.title('Brand vs Stars Distribution')
+plt.show()
+```
+![png](/img/posts/ramen/dist_brand.png)
+
+
+#### >> Packaging
 
 ```python
 style_s = df.groupby('Style').agg({'Style':'count','Stars':'mean'})
@@ -659,15 +707,79 @@ plt.show()
 ![png](/img/posts/ramen/output_21_0.png)
     
 
+##### Word Cloud
+
+```python
+from os import path
+from PIL import Image
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+
+word=df['Variety'].apply(lambda x:pd.value_counts(x.split(" "))).sum(axis=0)
+```
+
+**MEAT Flavour**
+
+```python
+text = " ".join(desc for desc in df.Variety)
+print ("There are {} words in the combination of all review.".format(len(text)))
+# Create stopword list:
+stopwords = set(STOPWORDS)
+stopwords.update(['Flavor','Noodle','Instant','Soup','Artificial','Flavour','Noodles','Ramen','Tonkotsu','Bowl','Cup'])
+
+# Generate a word cloud image
+wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
+
+# Display the generated image:
+# the matplotlib way:
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+```
+
+There are 113317 words in the combination of all review.
+    
+
+    
+![png](/img/posts/ramen/new_word_flavour.png)
+    
+
+
+**Other Flavour (taste)**
 
 
 ```python
-df['Variety']=df['Variety'].replace('[^a-zA-Z]',' ')
+text_F_Other = " ".join(desc for desc in Flavour_Other.Variety)
+print ("There are {} words in the combination of all review.".format(len(text)))
+
+# Create stopword list:
+stopwords = set(STOPWORDS)
+stopwords.update(['flavor','noodle','Instant','big','Soup','vermicelli','Artificial','Taste','Bowl','Style','Soba','Flavour','Rice','Sauce','Udon','Noodles','Ramen','Chili','ramyun','Spicy','Hot','Cup','Bowl'])
+
+# Generate a word cloud image
+wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text_F_Other)
+
+# Display the generated image:
+# the matplotlib way:
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
 ```
+
+    There are 113317 words in the combination of all review.
+    
+
+
+    
+![png](/img/posts/ramen/new_word_taste.png)
+    
+
+
+
 
 #### Spicy
 
 ```python
+df['Variety']=df['Variety'].replace('[^a-zA-Z]',' ') #del symbol in column
 taste=['Spicy','Chili','Hot','Yum','Curry','Pepper','Mala','Spice','Ginger']
 df['Spicy']=df['Variety'].apply(lambda x : 'Spicy' if sum(1 for w in x.split(' ') if w in taste)!=0 else 'NotSpicy')
 df.groupby('Spicy').agg({'Stars':'mean','Spicy':'count'})
@@ -1074,71 +1186,6 @@ flavour_s = flavour_s.sort_values(by =['Total','Stars'],ascending = False).reset
 
 
 
-##### Word Cloud
-
-```python
-from os import path
-from PIL import Image
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-
-word=df['Variety'].apply(lambda x:pd.value_counts(x.split(" "))).sum(axis=0)
-```
-
-**MEAT Flavour**
-
-```python
-text = " ".join(desc for desc in df.Variety)
-print ("There are {} words in the combination of all review.".format(len(text)))
-# Create stopword list:
-stopwords = set(STOPWORDS)
-stopwords.update(['Flavor','Noodle','Instant','Soup','Artificial','Flavour','Noodles','Ramen','Tonkotsu'])
-
-# Generate a word cloud image
-wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
-
-# Display the generated image:
-# the matplotlib way:
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis("off")
-plt.show()
-```
-
-There are 113317 words in the combination of all review.
-    
-
-    
-![png](/img/posts/ramen/output_40_1.png)
-    
-
-
-**Other Flavour (taste)**
-
-
-```python
-text_F_Other = " ".join(desc for desc in Flavour_Other.Variety)
-print ("There are {} words in the combination of all review.".format(len(text)))
-
-# Create stopword list:
-stopwords = set(STOPWORDS)
-stopwords.update(['flavor','noodle','Instant','big','Soup','vermicelli','Artificial','Taste','Bowl','Style','Soba','Flavour','Rice','Sauce','Udon','Yakisoba','Noodles','Ramen','Tonkotsu','Chili','ramyun','Spicy','Hot','Cup'])
-
-# Generate a word cloud image
-wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text_F_Other)
-
-# Display the generated image:
-# the matplotlib way:
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis("off")
-plt.show()
-```
-
-    There are 113317 words in the combination of all review.
-    
-
-
-    
-![png](/img/posts/ramen/output_42_1.png)
-    
 
 
 ## NMF
@@ -1296,4 +1343,4 @@ for i in range(0,15):
 <br />
 
 ## Future Improvement ##
-Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data is apparently nonparametric with its skewness and free distribution.So,go through the Kruskal-Wallis.
+Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data appears in nonparametric with its skewness and free distribution.So,I will go for the Kruskal-Wallis.
