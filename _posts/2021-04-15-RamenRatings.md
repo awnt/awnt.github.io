@@ -736,7 +736,7 @@ plt.show()
 ![png](/img/posts/ramen/output_21_0.png)
     
 
-##### Word Cloud
+#### Word Cloud
 Use the Word cloud to grasp keywords in the variety column and create new categories as Spicy and Flavour.
 
 ```python
@@ -747,8 +747,8 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 word=df['Variety'].apply(lambda x:pd.value_counts(x.split(" "))).sum(axis=0)
 ```
 
-**MEAT Theme**
-
+<h5> >> MEAT Flavour </h5>
+ 
 
 
 ```python
@@ -778,7 +778,8 @@ Try to cut the spicy out.
 
 Clearly see that Chicken is No.1 and it makes sense.
 
-**Soup/Taste Theme**
+
+<h5> >> Soup/Taste </h5>
 
 Additionally , except for meat and spicy theme,there are interesting flavours ,tastes or kinds of soup.Figure out that Curry is the most favorable one,with many types of curry.Tonkotsu is no.2 ,come next with Yakisoba , Miso ,Shoyu and Kimchi which absolutely the the oriental style from Japan and Korea.  
 
