@@ -548,10 +548,39 @@ brand_s[1:].describe()
       <td>103</td>
       <td>4.1</td>
     </tr>
+    <tr>
+      <th>5</th>
+      <td>Paldo</td>
+      <td>84</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Mama</td>
+      <td>71</td>
+      <td>3.6</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Sapporo Ichiban</td>
+      <td>69</td>
+      <td>3.8</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Indomie</td>
+      <td>56</td>
+      <td>4.1</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Ottogi</td>
+      <td>51</td>
+      <td>3.4</td>
+    </tr>
   </tbody>
 </table>
 </div>
-
 
 
 
@@ -708,6 +737,7 @@ plt.show()
     
 
 ##### Word Cloud
+Use the Word cloud to grasp keywords in the variety column and create new categories as Spicy and Flavour.
 
 ```python
 from os import path
@@ -717,14 +747,16 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 word=df['Variety'].apply(lambda x:pd.value_counts(x.split(" "))).sum(axis=0)
 ```
 
-**MEAT Flavour**
+**MEAT Theme**
+
+
 
 ```python
 text = " ".join(desc for desc in df.Variety)
 print ("There are {} words in the combination of all review.".format(len(text)))
 # Create stopword list:
 stopwords = set(STOPWORDS)
-stopwords.update(['Flavor','Noodle','Instant','Soup','Artificial','Flavour','Noodles','Ramen','Tonkotsu','Bowl','Cup'])
+stopwords.update(['Flavor','Noodle','Instant','Soup','Artificial','Flavour','Noodles','Ramen','Soba','Udon','Sauce','Tonkotsu','Curry','Bowl','Kimchi','Cup','Yakisoba','Shoyu','Rice'])
 
 # Generate a word cloud image
 wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
@@ -735,17 +767,20 @@ plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
 plt.show()
 ```
-
-There are 113317 words in the combination of all review.
-    
+ 
 
     
-![png](/img/posts/ramen/new_word_flavour.png)
+![png](/img/posts/ramen/new_word_flavour2.png)
+
+Try to cut the spicy out.
     
+![png](/img/posts/ramen/delSpicy.png)
 
+Clearly see that Chicken is No.1 and it makes sense.
 
-**Other Flavour (taste)**
+**Soup/Taste Theme**
 
+Additionally , except for meat and spicy theme,there are interesting flavours ,tastes or kinds of soup.Figure out that Curry is the most favorable one,with many types of curry.Tonkotsu is no.2 ,come next with Yakisoba , Miso ,Shoyu and Kimchi which absolutely the the oriental style from Japan and Korea.  
 
 ```python
 text_F_Other = " ".join(desc for desc in Flavour_Other.Variety)
@@ -754,6 +789,7 @@ print ("There are {} words in the combination of all review.".format(len(text)))
 # Create stopword list:
 stopwords = set(STOPWORDS)
 stopwords.update(['flavor','noodle','Instant','big','Soup','vermicelli','Artificial','Taste','Bowl','Style','Soba','Flavour','Rice','Sauce','Udon','Noodles','Ramen','Chili','ramyun','Spicy','Hot','Cup','Bowl'])
+
 
 # Generate a word cloud image
 wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text_F_Other)
@@ -770,13 +806,13 @@ plt.show()
 
 
     
-![png](/img/posts/ramen/new_word_taste.png)
+![png](/img/posts/ramen/new_word_taste2.png)
     
 
 
 
-
-#### Spicy
+#### Create new columns
+<h5> 1. Spicy </h5>
 
 ```python
 df['Variety']=df['Variety'].replace('[^a-zA-Z]',' ') #del symbol in column
@@ -784,8 +820,6 @@ taste=['Spicy','Chili','Hot','Yum','Curry','Pepper','Mala','Spice','Ginger']
 df['Spicy']=df['Variety'].apply(lambda x : 'Spicy' if sum(1 for w in x.split(' ') if w in taste)!=0 else 'NotSpicy')
 df.groupby('Spicy').agg({'Stars':'mean','Spicy':'count'})
 ```
-
-
 
 
 <div>
@@ -832,7 +866,7 @@ df.groupby('Spicy').agg({'Stars':'mean','Spicy':'count'})
 
 
 
-#### Flavours
+<h5> 2. Flavours </h5>
 
 
 ```python
@@ -937,182 +971,6 @@ df=df.explode('Flavour').fillna('Other')
 </div>
 
 
-
-
-```python
-df.Flavour.value_counts()
-df.loc[(df.Flavour=='Seafood')& (df.Spicy=='NotSpicy')]
-```
-
-
-
-
-    Other      2400
-    Chicken     436
-    Seafood     416
-    Beef        324
-    Pork        151
-    Name: Flavour, dtype: int64
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Review #</th>
-      <th>Brand</th>
-      <th>Variety</th>
-      <th>Style</th>
-      <th>Country</th>
-      <th>Stars</th>
-      <th>Spicy</th>
-      <th>Flavour</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3702</td>
-      <td>Higashimaru</td>
-      <td>Seafood Sara Udon</td>
-      <td>Pack</td>
-      <td>Japan</td>
-      <td>5.0</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>3655</td>
-      <td>Myojo</td>
-      <td>Ramen Seafood Tonkotsu</td>
-      <td>Pack</td>
-      <td>United States</td>
-      <td>5.0</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>60</th>
-      <td>3642</td>
-      <td>Itomen</td>
-      <td>Seafood Miso Ramen</td>
-      <td>Pack</td>
-      <td>Japan</td>
-      <td>3.2</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>72</th>
-      <td>3630</td>
-      <td>Sau Tao</td>
-      <td>Instant Noodle King Lobster Soup Flavour</td>
-      <td>Pack</td>
-      <td>Hong Kong</td>
-      <td>3.8</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>93</th>
-      <td>3609</td>
-      <td>Vi Huong</td>
-      <td>Shrimp Instant Noodles</td>
-      <td>Pack</td>
-      <td>Vietnam</td>
-      <td>3.5</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>3654</th>
-      <td>48</td>
-      <td>Indomie</td>
-      <td>Shrimp Flavor</td>
-      <td>Pack</td>
-      <td>Indonesia</td>
-      <td>3.0</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>3668</th>
-      <td>34</td>
-      <td>Maruchan</td>
-      <td>Ramen Noodle Soup Shrimp</td>
-      <td>Pack</td>
-      <td>United States</td>
-      <td>2.0</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>3669</th>
-      <td>33</td>
-      <td>Koka</td>
-      <td>Mi Hai Tom Prawn</td>
-      <td>Pack</td>
-      <td>Singapore</td>
-      <td>3.8</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>3670</th>
-      <td>32</td>
-      <td>Koka</td>
-      <td>Mi Hai Cua Crab Flavor</td>
-      <td>Pack</td>
-      <td>Singapore</td>
-      <td>3.5</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-    <tr>
-      <th>3690</th>
-      <td>12</td>
-      <td>Sapporo Ichiban</td>
-      <td>Shrimp Flavor</td>
-      <td>Pack</td>
-      <td>Japan</td>
-      <td>2.5</td>
-      <td>NotSpicy</td>
-      <td>Seafood</td>
-    </tr>
-  </tbody>
-</table>
-<p>258 rows × 8 columns</p>
-</div>
-
-
 Ranking average flavour rating 
 ```python
 Flavour_Other=df.loc[df.Flavour=='Other']
@@ -1183,12 +1041,12 @@ flavour_s = flavour_s.sort_values(by =['Total','Stars'],ascending = False).reset
 </div>
 
 
+<br/>
+<br/>
 
 
 
-
-
-## NMF
+####  NMF
 
 ```python
 from sklearn.decomposition import NMF
