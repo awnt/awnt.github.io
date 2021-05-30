@@ -25,12 +25,14 @@ background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marbl
 
 #### Data Description and Preparation
 The data consists of 5 columns : <br />
-1.Review : Reviewer No. <br />
+1.Review : Review No. <br />
 2.Brand : Ramen brand <br />
-3.Variety : Describing words including taste , flavour ,noodle style,etc.
-Give the big picture about remen <br />
-4.Style : Packaging style <br />
+3.Variety : Variation of ramen , Give the big picture about remen <br />
+4.Style : style of ramen <br />
 5.Stars : as known as Ratings <br />
+
+
+
 
 <div>
 <style scoped>
@@ -138,6 +140,7 @@ df.Stars.unique()
            4.125, 3.125, 2.125, 2.9, 0.1, 2.8, 3.7, 3.4, 3.6, 2.85, 2.3, 3.2,
            3.65, 1.8], dtype=object)
 
+
 ```python
 df.Stars.replace(to_replace={'Unrated':0},inplace=True)
 df.Stars=df.Stars.astype(float).round(1)
@@ -147,7 +150,7 @@ df.Stars=df.Stars.astype(float).round(1)
 
 ##### >> Country
 
-For top 10 countries , Japan is the biggest in the market follow with US and South Korea.Malaysia got 4.2 stars which is the most highest score. The least one belong to Thailand with 3.4 stars.At this point,It concerns that the total amount of noodles is very wide range between maximun and minimum.It could be affected the average stars.
+For top 10 countries , Japan is the biggest in the market follow with US and South Korea.Malaysia got 4.2 stars which is the most highest score. The least one belong to Thailand with 3.4 stars.At this point,It concerns that the total amount of noodles is very wide range between maximun and minimum.It could affect the average stars.
 
 
 ```python
@@ -629,88 +632,13 @@ plt.show()
 
 
 #### >> Packaging
+Agree wit the barplot,almost instant ramens are generally in 'pack'.For convenience ,like grab and go,we commonly see in 'bowl' or 'cup'. The other types are hardly found.
 
 ```python
 style_s = df.groupby('Style').agg({'Style':'count','Stars':'mean'})
 style_s=style_s.rename({'Style':'Total'},axis=1).reset_index()
 style_s.Stars=style_s.Stars.round(1)
 ```
-
-
-```python
-style_s.describe()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Total</th>
-      <th>Stars</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>8.000000</td>
-      <td>8.00000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>462.750000</td>
-      <td>3.88750</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>723.316321</td>
-      <td>0.53569</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>1.000000</td>
-      <td>3.50000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>2.500000</td>
-      <td>3.57500</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>110.500000</td>
-      <td>3.65000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>674.750000</td>
-      <td>3.95000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>2095.000000</td>
-      <td>5.00000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
 
 
 
@@ -736,84 +664,13 @@ plt.show()
 ![png](/img/posts/ramen/output_21_0.png)
     
 
-#### Word Cloud
-Use the Word cloud to grasp keywords in the variety column and create new categories as Spicy and Flavour.
-
-```python
-from os import path
-from PIL import Image
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-
-word=df['Variety'].apply(lambda x:pd.value_counts(x.split(" "))).sum(axis=0)
-```
-
-<h5> >> MEAT Flavour </h5>
- 
-
-
-```python
-text = " ".join(desc for desc in df.Variety)
-print ("There are {} words in the combination of all review.".format(len(text)))
-# Create stopword list:
-stopwords = set(STOPWORDS)
-stopwords.update(['Flavor','Noodle','Instant','Soup','Artificial','Flavour','Noodles','Ramen','Soba','Udon','Sauce','Tonkotsu','Curry','Bowl','Kimchi','Cup','Yakisoba','Shoyu','Rice'])
-
-# Generate a word cloud image
-wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
-
-# Display the generated image:
-# the matplotlib way:
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis("off")
-plt.show()
-```
- 
-
-    
-![png](/img/posts/ramen/new_word_flavour2.png)
-
-Try to cut the spicy out.
-    
-![png](/img/posts/ramen/delSpicy.png)
-
-Clearly see that Chicken is No.1 and it makes sense.
-
-
-<h5> >> Soup/Taste </h5>
-
-Additionally , except for meat and spicy theme,there are interesting flavours ,tastes or kinds of soup.Figure out that Curry is the most favorable one,with many types of curry.Tonkotsu is no.2 ,come next with Yakisoba , Miso ,Shoyu and Kimchi which absolutely the the oriental style from Japan and Korea.  
-
-```python
-text_F_Other = " ".join(desc for desc in Flavour_Other.Variety)
-print ("There are {} words in the combination of all review.".format(len(text)))
-
-# Create stopword list:
-stopwords = set(STOPWORDS)
-stopwords.update(['flavor','noodle','Instant','big','Soup','vermicelli','Artificial','Taste','Bowl','Style','Soba','Flavour','Rice','Sauce','Udon','Noodles','Ramen','Chili','ramyun','Spicy','Hot','Cup','Bowl'])
-
-
-# Generate a word cloud image
-wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text_F_Other)
-
-# Display the generated image:
-# the matplotlib way:
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis("off")
-plt.show()
-```
-
-    There are 113317 words in the combination of all review.
-    
-
-
-    
-![png](/img/posts/ramen/new_word_taste2.png)
-    
 
 
 
 #### Create new columns
+
 <h5> 1. Spicy </h5>
+It is an important key to select the food because some people literally cannot handle spicy food.So,I bring it out to new category.
 
 ```python
 df['Variety']=df['Variety'].replace('[^a-zA-Z]',' ') #del symbol in column
@@ -868,7 +725,7 @@ df.groupby('Spicy').agg({'Stars':'mean','Spicy':'count'})
 
 
 <h5> 2. Flavours </h5>
-
+Chicken is kind of standard recipes.I mean some people do not comsume eithor beef or pork flavour.They will choose chicken one.Refer from the plot it can be orders as chicken , seafood , beef and pork.
 
 ```python
 FV={'Chicken':'Chicken',
@@ -1045,9 +902,81 @@ flavour_s = flavour_s.sort_values(by =['Total','Stars'],ascending = False).reset
 <br/>
 <br/>
 
+#### Word Cloud
+ How can I know the keywords ? Well,to be honest, the previous step I just ramdomly search and group them together such as seafood. But if you're fluently in text mining or else it would be better.
+ Otherwise,Word cloud is a good choice for grasping keywords in the variety column.
+```python
+from os import path
+from PIL import Image
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+
+word=df['Variety'].apply(lambda x:pd.value_counts(x.split(" "))).sum(axis=0)
+```
+
+#### >> MEAT Flavour 
+ 
+
+```python
+text = " ".join(desc for desc in df.Variety)
+print ("There are {} words in the combination of all review.".format(len(text)))
+# Create stopword list:
+stopwords = set(STOPWORDS)
+stopwords.update(['Flavor','Noodle','Instant','Soup','Artificial','Flavour','Noodles','Ramen','Soba','Udon','Sauce','Tonkotsu','Curry','Bowl','Kimchi','Cup','Yakisoba','Shoyu','Rice'])
+
+# Generate a word cloud image
+wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text)
+
+# Display the generated image:
+# the matplotlib way:
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+```
+ 
+
+    
+![png](/img/posts/ramen/new_word_flavour2.png)
+
+Try to cut the spicy out.
+    
+![png](/img/posts/ramen/delSpicy.png)
+
+Clearly see that Chicken is No.1 and it makes sense.
+
+
+#### >> Soup/Taste 
+Additionally , except for meat and spicy theme,there are interesting flavours ,tastes or kinds of soup.Figure out that Curry is the most favorable one,with many types of curry.Tonkotsu is no.2 ,come next with Yakisoba , Miso ,Shoyu and Kimchi which absolutely the the oriental style from Japan and Korea.  
+
+```python
+text_F_Other = " ".join(desc for desc in Flavour_Other.Variety)
+print ("There are {} words in the combination of all review.".format(len(text)))
+
+# Create stopword list:
+stopwords = set(STOPWORDS)
+stopwords.update(['flavor','noodle','Instant','big','Soup','vermicelli','Artificial','Taste','Bowl','Style','Soba','Flavour','Rice','Sauce','Udon','Noodles','Ramen','Chili','ramyun','Spicy','Hot','Cup','Bowl'])
+
+
+# Generate a word cloud image
+wordcloud = WordCloud(stopwords=stopwords, background_color="white").generate(text_F_Other)
+
+# Display the generated image:
+# the matplotlib way:
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+```
+
+    There are 113317 words in the combination of all review.
+    
+
+
+    
+![png](/img/posts/ramen/new_word_taste2.png)
+    
 
 
 ####  NMF
+I'm a newbie in the text mining. Just give it a little try below.Grouping the  
 
 ```python
 from sklearn.decomposition import NMF
@@ -1197,6 +1126,8 @@ for i in range(0,15):
     soy         0.197432
     soba        0.187999
     Name: 14, dtype: float64
+    
+
     
 <br />
 <br />
