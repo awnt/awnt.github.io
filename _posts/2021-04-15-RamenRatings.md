@@ -5,22 +5,15 @@ subtitle: "python"
 background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marble-background.jpg'
 ---
 
-  This project is about to exploring the world of instant ramen.Based on Hans Lienesch's opinion which collected in 'The Big List' dataset. There are 3700 varieties of ramen (up to January 2021)  rated according to brand,taste,packaging style and country. His website [THE RAMEN RATER](https://www.theramenrater.com/){:target="_blank" rel="noopener"} and [youtube channel](https://www.youtube.com/channel/UCoO7I0stFzbrcLbHxZ7tOFA){:target="_blank" rel="noopener"} is so touching for the ramen-craving person.<br />
-
-## Questions <br />
-- Which country and brand is the biggest in this market?
-- How many kind of packaging and which one is popular?
-- What are trending tastes and flavours?
-
+  This project is about to exploring the world of instant ramen.Based on Hans Lienesch's opinion which collected in 'The Big List' dataset. There are 3700 varieties of ramen (up to January 2021)  rated according to brand,taste,packaging style and country. His website [THE RAMEN RATER](https://www.theramenrater.com/){:target="_blank" rel="noopener"} and [youtube channel](https://www.youtube.com/channel/UCoO7I0stFzbrcLbHxZ7tOFA){:target="_blank" rel="noopener"} is so touching for the ramen-craving person.<br /> 
+  
+  To make a new choice for late night easy meal or even when you have a hard time going over the budget.It is good to increase your happiness by selecting the delicious food.If you are the big fan of instant ramens.Isn't it interesting to know which is the best remen to eat? Which one you should try? What are trending now?.    <br /> 
+  
 
 ### Tools <br />
 - Python : pandas , numpy , matplotlib , seaborn
 - Descriptive 
 - Word cloud , NMF
-
-## Conclusion <br />
-<br />
-<br />
 
 
 #### Data Description and Preparation
@@ -28,7 +21,7 @@ The data consists of 5 columns : <br />
 1.Review : Review No. <br />
 2.Brand : Ramen brand <br />
 3.Variety : Variation of ramen , Give the big picture about remen <br />
-4.Style : style of ramen <br />
+4.Style : packaging style , ramen style <br />
 5.Stars : as known as Ratings <br />
 
 
@@ -150,8 +143,7 @@ df.Stars=df.Stars.astype(float).round(1)
 
 ##### >> Country
 
-For top 10 countries , Japan is the biggest in the market follow with US and South Korea.Malaysia got 4.2 stars which is the most highest score. The least one belong to Thailand with 3.4 stars.At this point,It concerns that the total amount of noodles is very wide range between maximun and minimum.It could affect the average stars.
-
+In top 10 countries , Japan is the biggest in the market follow with US and South Korea.While Malaysia got 4.2 stars which is the most highest score. The least one belong to Thailand with 3.4 stars which is belows overall average at 3.5. Anyways,It concerns that total amount of noodles is very wide range between maximun and minimum.The average scores could be affected.
 
 ```python
 country_s=df.groupby('Country').agg({'Country':'count','Stars':'mean'})
@@ -175,6 +167,7 @@ country_s = country_s.sort_values(by =['Total','Stars'],ascending = False).reset
         text-align: right;
     }
 </style>
+
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -320,6 +313,12 @@ country_s = country_s.sort_values(by =['Total','Stars'],ascending = False).reset
 
 
 <br />
+```python
+country_s['Stars'].plot(kind='box')
+plt.show()
+```
+
+![png](/img/posts/ramen/output_11_0.png)
 
 ```python
 sns.barplot(x='Country',y='Total',data=country_s[0:10])
@@ -334,15 +333,6 @@ plt.show()
 
 
 
-```python
-country_s['Stars'].plot(kind='box')
-plt.show()
-```
-
-
-    
-![png](/img/posts/ramen/output_11_0.png)
-    
 
 
 <br />
@@ -392,8 +382,7 @@ plt.show()
 
 
 ##### >> Brand
-'Nissin' has the largest number of flavours far from others with 476 and average rating at 3.9.Marucha,Nongshim,Myojo and Samyang are in a row.The four have nearly amount around 120 along with rating 3.7,4.0,3.9 and 4.1 respectively.We can see that such a slighty different point among the top 5.Anyways,It might meaning a lot if we seriously discover for a really good taste one.
-
+'Nissin' has the largest proportion far from others with 476 and average rating at 3.9.Marucha,Nongshim,Myojo and Samyang are in a row.The four have nearly amount around 120 along with rating 3.7,4.0,3.9 and 4.1 respectively.For last top 5 ,each brand produced below 100 and the rating of which varies between 3.6 to 4.1. There are two brands,Samyang  and Indomie, got the highest scores at 4.1. 
 
 ```python
 brand_s=df.groupby('Brand').agg({'Brand':'count','Stars':'mean'})
@@ -401,100 +390,6 @@ brand_s=brand_s.rename({'Brand':'Total'},axis=1)
 brand_s.Stars=brand_s.Stars.round(1)
 brand_s = brand_s.sort_values(by =['Total','Stars'],ascending = False).reset_index()
 ```
-
-
-```python
-brand_s.loc[brand_s.Total>6].sum()
-```
-
-
-
-
-    Brand    NissinMaruchanNongshimMyojoSamyang FoodsPaldoM...
-    Total                                                 2768
-    Stars                                                406.7
-    dtype: object
-
-
-
-
-```python
-brand_s[1:].describe()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Total</th>
-      <th>Stars</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>543.000000</td>
-      <td>543.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>5.941068</td>
-      <td>3.552855</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>13.054535</td>
-      <td>1.101218</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>1.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>1.000000</td>
-      <td>3.200000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>2.000000</td>
-      <td>3.800000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>5.000000</td>
-      <td>4.200000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>131.000000</td>
-      <td>5.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
 
 
 <div>
@@ -585,7 +480,7 @@ brand_s[1:].describe()
 </table>
 </div>
 
-
+<br/>
 
 ```python
 annotations=[i for i in brand_s[0:9]['Brand']]
@@ -903,7 +798,7 @@ flavour_s = flavour_s.sort_values(by =['Total','Stars'],ascending = False).reset
 <br/>
 
 #### Word Cloud
- How can I know the keywords ? Well,to be honest, the previous step I just ramdomly search and group them together such as seafood. But if you're fluently in text mining or else it would be better.
+ How can I know the keywords ? Well,to be honest, the previous step I just do ramdomly searching. 
  Otherwise,Word cloud is a good choice for grasping keywords in the variety column.
 ```python
 from os import path
@@ -976,7 +871,7 @@ plt.show()
 
 
 ####  NMF
-I'm a newbie in the text mining. Just give it a little try below.Grouping the  
+I'm a newbie in the text mining. Just give it a little try.
 
 ```python
 from sklearn.decomposition import NMF
@@ -1130,7 +1025,12 @@ for i in range(0,15):
 
     
 <br />
-<br />
+
+## Conclusion ## 
+Japan has high market share for instant ramens with the largest number far from others.According to Nissin ,the Japanese ramen, is at the highest amount.Generally, Japanese ramens is does very famous by their names.Malaysian ramens got the highest rating.Next with Indonesia and Singapore ramens have equal rates.Korean Samyang as well as Indonesian Indomie scored at the first place.Following by Nongshim and Paldo both are Korea's brand.
+
+Respected to the flavours , Chicken is the most popular.This makems sense because the chicken's memu can be compatible with many religious conditions.Spicy ramens have a small amount accounted for twenty-five percent. Curry soups are very popular as there are many kinds of curry soup gathering from over the world.Nearly with Tonkotsu, Yakisoba and miso ramens which are from Japan.
 
 ## Future Improvement ##
-Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data appears in nonparametric with its skewness and free distribution.So,I will go for the Kruskal-Wallis.
+- Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data appears in nonparametric with its skewness and free distribution.Kruskal-Wallis should be an appropriate method.
+- To do a ramen recommender system using some kinds of text algorithm.Maybe a great start for NPL project.
