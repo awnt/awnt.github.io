@@ -1033,4 +1033,4 @@ Respected to the flavours , Chicken is the most in-demand.This makes sense becau
 
 ## Future Improvement ##
 - Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data appears in nonparametric with its skewness and free distribution.Kruskal-Wallis should be an appropriate method.
-- To do a ramen recommender system using some kinds of text algorithm.Maybe a great start for NPL project.
+- To do a ramen recommender system ,using some kinds of text algorithm.It must be a great start for NPL project.
