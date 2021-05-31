@@ -1027,9 +1027,9 @@ for i in range(0,15):
 <br />
 
 ## Conclusion ## 
-Japan has high market share with the largest number far from others.According to Nissin ,the Japanese ramen, is at the highest amount.Generally, Japanese ramens is does very famous by their names.Malaysian ramens wins top-raking following by Indonesian and Singapore ramens which have equal rates.Korean Samyang as well as Indonesian Indomie is scored at the first place.Next with Nongshim and Paldo both are Korea's brand.
+Japan has high market share with the largest number far from others.According to Nissin ,the Japanese ramen, is at the highest amount.Generally, Japanese ramens are well-known by their names.Malaysian ramens win top-raking following by Indonesian and Singapore ones which have equal rates.Korean Samyang as well as Indonesian Indomie is scored at the first place.Next with Nongshim and Paldo both are Korea's brand.
 
-Respected to the flavours , Chicken is the most popular.This makes sense because the chicken's memu can be compatible with many religious conditions.Spicy ramens have a small amount accounted for twenty-five percent. Curry soups are very popular as there are many kinds of curry soup gathering from over the world.Nearly with Tonkotsu, Yakisoba and miso ramens which are from Japan.
+Respected to the flavours , Chicken is the most in-demand.This makes sense because the chicken's memu can be compatible with many religious conditions.Spicy ramens have a small amount accounted for twenty-five percent. Curry soups are very popular as there are many kinds of curry soup gathering from over the world.Nearly with Tonkotsu, Yakisoba and miso ramens which are from Japan.
 
 ## Future Improvement ##
 - Apply hypothesis tests to figure out which variables significantly affect to average scores,maybe one or more! First,I have planned to use ANOVA but the data appears in nonparametric with its skewness and free distribution.Kruskal-Wallis should be an appropriate method.
