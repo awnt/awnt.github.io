@@ -836,11 +836,11 @@ Try to cut the spicy out.
     
 ![png](/img/posts/ramen/delSpicy.png)
 
-Clearly see that Chicken is No.1 and it makes sense.
+Clearly see that Chicken is No.1.
 
 
 #### >> Soup/Taste 
-Additionally , except for meat and spicy theme,there are interesting flavours ,tastes or kinds of soup.Figure out that Curry is the most favorable one,with many types of curry.Tonkotsu is no.2 ,come next with Yakisoba , Miso ,Shoyu and Kimchi which absolutely the the oriental style from Japan and Korea.  
+Additionally ,there are interesting flavours ,tastes or kinds of soup to show more.Create clounding to find new keywords.Notice that curry is the most favorable one,with many types of them.Tonkotsu is no.2 ,come next with Yakisoba , Miso ,Shoyu and Kimchi which are absolutely the oriental style from Japan and Korea.  
 
 ```python
 text_F_Other = " ".join(desc for desc in Flavour_Other.Variety)
@@ -872,6 +872,8 @@ plt.show()
 
 ####  NMF
 I'm a newbie in the text mining. Just give it a little try.
+Grouping words which frequently found together in different ramen theme.
+
 
 ```python
 from sklearn.decomposition import NMF
@@ -890,12 +892,12 @@ print(desc.shape)
 
 
 ```python
-nmf = NMF(n_components=15)
+nmf = NMF(n_components=10)
 nmf_features = nmf.fit_transform(desc) 
 
 components_temp = pd.DataFrame(nmf.components_,columns=words)
 
-for i in range(0,15):
+for i in range(0,10):
     components = components_temp.iloc[i,:].nlargest()
     print("group:{}\n{}\n".format(i+1,components))
    
@@ -982,46 +984,7 @@ for i in range(0,15):
     hokkaido    0.129194
     Name: 9, dtype: float64
     
-    group:11
-    hot          2.603002
-    sour         0.735126
-    pot          0.139637
-    chongqing    0.106733
-    buldak       0.094338
-    Name: 10, dtype: float64
-    
-    group:12
-    tonkotsu    1.880278
-    demae       0.787441
-    shoyu       0.595465
-    sesame      0.504352
-    oil         0.313153
-    Name: 11, dtype: float64
-    
-    group:13
-    vegetable     2.363739
-    mushroom      0.213656
-    pickled       0.165866
-    vegetarian    0.151770
-    laksa         0.091456
-    Name: 12, dtype: float64
-    
-    group:14
-    kimchi        2.358427
-    korean        0.341209
-    south         0.170860
-    mr            0.158396
-    vegetarian    0.142083
-    Name: 13, dtype: float64
-    
-    group:15
-    yakisoba    2.062222
-    japanese    0.316541
-    shio        0.249533
-    soy         0.197432
-    soba        0.187999
-    Name: 14, dtype: float64
-    
+       
 
     
 <br />
