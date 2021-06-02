@@ -1,10 +1,21 @@
 ---
 layout: post
-title: "Customer's bank churn"
-subtitle: "R"
+title: "Bank Churn Prediction"
+subtitle: customer churn forcast using R
 background: '/img/posts/bankchurn/euro.jpg'
 ---
+This dataset was provided by [kaggle](https://www.kaggle.com/adammaus/predicting-churn-for-bank-customers){:target="_blank" rel="noopener"}.
 
+
+### Tools <br />
+- R : ggplot,dplyr
+
+
+
+
+
+
+#### Data Description and Preparation
 ```r
 # install.packages("tidyverse")
 # install.packages("ggpubr")
@@ -15,14 +26,6 @@ library(cowplot)
 library(ggpubr)
 library(ggcorrplot)
 library(dplyr)
-```
-
-
-
-
-
-```r
-setwd("D:/Git/Project/Bank_churn/")
 ```
 
 
@@ -48,7 +51,7 @@ str(df)
 ##  $ EstimatedSalary: num  101349 112543 113932 93827 79084 ...
 ##  $ Exited         : int  1 0 1 0 0 1 0 1 0 0 ...
 ```
-
+For basic exploration, the data has no null value.Totally 14 variables was contained as char,int and num.Delete the unnessary variable like Row number ,Customer ID ,Surname).Transform the data to categorical by apply as.factor() with the selected variables as shown below.
 
 ```r
 df <- df %>%
@@ -111,17 +114,7 @@ Location_churn<-ggplot(data=df)+
   guides(fill=guide_legend(title="Churn"))+
   scale_fill_manual(values=c("cornflowerblue","brown"))
   theme(aspect.ratio = 1)
-```
 
-```
-## List of 1
-##  $ aspect.ratio: num 1
-##  - attr(*, "class")= chr [1:2] "theme" "gg"
-##  - attr(*, "complete")= logi FALSE
-##  - attr(*, "validate")= logi TRUE
-```
-
-```r
 Location_cat<-ggplot(df,aes(Geography))+
   geom_bar(fill="grey41",width=0.5)+
   theme(aspect.ratio = 0.8)
@@ -399,80 +392,8 @@ library(caTools)
 library(rpart)
 library(rpart.plot)
 library(party)
-```
-
-```
-## Loading required package: grid
-```
-
-```
-## Loading required package: mvtnorm
-```
-
-```
-## Loading required package: modeltools
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## Loading required package: strucchange
-```
-
-```
-## Loading required package: zoo
-```
-
-```
-## 
-## Attaching package: 'zoo'
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-```
-
-```
-## Loading required package: sandwich
-```
-
-```
-## 
-## Attaching package: 'strucchange'
-```
-
-```
-## The following object is masked from 'package:stringr':
-## 
-##     boundary
-```
-
-```r
 library(partykit)
 ```
-
-```
-## Loading required package: libcoin
-```
-
-```
-## 
-## Attaching package: 'partykit'
-```
-
-```
-## The following objects are masked from 'package:party':
-## 
-##     cforest, ctree, ctree_control, edge_simple, mob, mob_control,
-##     node_barplot, node_bivplot, node_boxplot, node_inner, node_surv,
-##     node_terminal, varimp
-```
-
-
 
 Decision Tree
 
@@ -487,13 +408,6 @@ rpart.plot(rtree)
 ```
 
 ![png](/img/posts/bankchurn/unnamed-chunk-20-1.png)<!-- -->
-
-```r
-ctree_ <- ctree(Exited ~ ., train_data)
-plot(ctree_)
-```
-
-![](bank_churn_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 
 
@@ -529,32 +443,6 @@ random forest
 # install.packages("randomForest")
 library(randomForest)
 ```
-
-```
-## randomForest 4.6-14
-```
-
-```
-## Type rfNews() to see new features/changes/bug fixes.
-```
-
-```
-## 
-## Attaching package: 'randomForest'
-```
-
-```
-## The following object is masked from 'package:dplyr':
-## 
-##     combine
-```
-
-```
-## The following object is masked from 'package:ggplot2':
-## 
-##     margin
-```
-
 
 ```r
 rfmod <- randomForest(Exited ~ ., data = train_data, importance = T)

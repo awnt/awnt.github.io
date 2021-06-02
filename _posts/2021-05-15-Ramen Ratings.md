@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Ramen Ratings"
-subtitle: "python"
+subtitle: Navigate the best ramen with python
 background: '/img/posts/ramen/unprepared-pasta-bunch-whole-grain-spaghetti-marble-background.jpg'
 ---
 
