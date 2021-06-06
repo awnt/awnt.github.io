@@ -125,7 +125,7 @@ ggplot(df,aes(Exited))+
 ```
 
 **>> Gender**<br />
-This Bank has more male customers than female.Stretch out the bar plot and overlay churn on both categories,the diffences of churn proportion cleary appear that female customers tend to leave more frequently. According to the contingency table in row totals which indicates 25.07% of female churned as compared to male with 16.46%.However,most churners belong to male with 57.25% a bit different to non-churner 42.75%.
+The bank has more male customers than female.Stretch out the bar plot and overlay churn on both categories,the diffences of churn proportion cleary appear that female customers tend to leave more frequently. According to the contingency table in row totals which indicates 25.07% of female churned as compared to male with 16.46%.However,most churners belong to male with 57.25% a bit different to non-churner 42.75%.
 
 ![png](/img/posts/bankchurn/gender_bar.jpg)<!-- -->
 
@@ -170,9 +170,27 @@ ggarrange(Gender_churn, Gender_cat,
 
 
 
-**Location**
+**>> Location**
+
+
+![png](/img/posts/bankchurn/location_bar.jpg)<!-- -->
+
+
+*Contingency Table*
+```
+*row totals*                    *column totals*
+          Churn                           Churn
+Location      0     1           Location      0     1
+  France  52.79 39.76             France  83.85 16.15
+  Germany 21.29 39.96             Germany 67.56 32.44
+  Spain   25.92 20.27             Spain   83.33 16.67
+
+```
 
 ```r
+location_table<- table(df$Geography,df$Exited,dnn=c('Location','Churn'))
+round(prop.table(location_table,margin =2),4)*100 #col margin
+round(prop.table(location_table,margin =1),4)*100 #row margin
 Location_churn<-ggplot(data=df)+
   geom_bar(mapping = aes(Geography,fill=Exited),position='fill',width=0.5)+
   scale_x_discrete("Geography")+
@@ -189,12 +207,30 @@ ggarrange(Location_churn, Location_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/location_bar.jpg)<!-- -->
 
 
-**Number of Products**
 
+**>> Number of Products**
+
+![png](/img/posts/bankchurn/product_bar.jpg)<!-- -->
+```
+        Churn
+#Product     0     1
+       1 46.15 69.17
+       2 53.27 17.08
+       3  0.58 10.80
+       4  0.00  2.95
+        Churn
+#Product      0      1
+       1  72.29  27.71
+       2  92.42   7.58
+       3  17.29  82.71
+       4   0.00 100.00
+```
 ```r
+product_table<- table(df$NumOfProducts,df$Exited,dnn=c('#Product','Churn'))
+round(prop.table(product_table,margin =2),4)*100 #col margin
+round(prop.table(product_table,margin =1),4)*100 #row margin
 Product_churn<-ggplot(data=df)+
   geom_bar(mapping = aes(factor(NumOfProducts),fill=factor(Exited)),position='fill',width=0.8)+
   scale_x_discrete("NumofProducts")+
@@ -210,11 +246,24 @@ ggarrange(Product_churn, Product_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/product_bar.jpg)<!-- -->
+
 
 **Credit Card**
-
+![png](/img/posts/bankchurn/creditcard_bar.jpg)<!-- -->
+```
+          Churn                             
+CreditCard     0     1
+         0 29.29 30.09
+         1 70.71 69.91
+          Churn
+CreditCard     0     1
+         0 79.19 20.81
+         1 79.82 20.18
+```
 ```r
+creditcard_table<- table(df$HasCrCard,df$Exited,dnn=c('CreditCard','Churn'))
+round(prop.table(creditcard_table,margin =2),4)*100 #col margin
+round(prop.table(creditcard_table,margin =1),4)*100 #row margin
 Creditcard_churn<-ggplot(data=df)+
   geom_bar(mapping = aes(factor(HasCrCard),fill=factor(Exited)),position='fill',width=0.5)+
   scale_x_discrete("CreditCard")+
@@ -232,10 +281,25 @@ ggarrange(Creditcard_churn, Creditcard_cat,
          ncol = 2, nrow = 1)    
 ```
 
-![png](/img/posts/bankchurn/creditcard_bar.jpg)<!-- -->
+
 **Active Member**
+![png](/img/posts/bankchurn/active_bar.jpg)<!-- -->
+
+```
+      Churn
+Active     0     1
+     0 44.54 63.92
+     1 55.46 36.08
+      Churn
+Active     0     1
+     0 73.15 26.85
+     1 85.73 14.27
+```
 
 ```r
+active_table<- table(df$IsActiveMember,df$Exited,dnn=c('Active','Churn'))
+round(prop.table(active_table,margin =2),4)*100 #col margin
+round(prop.table(active_table,margin =1),4)*100 #row margin
 Active_churn<-ggplot(data=df)+
   geom_bar(mapping = aes(IsActiveMember,fill=Exited),position='fill',width=0.5)+
   scale_x_discrete("IsActiveMember")+
@@ -252,11 +316,16 @@ ggarrange(Active_churn, Active_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/active_bar.jpg)<!-- -->
+
 
 **Tenure**
+![png](/img/posts/bankchurn/tenure_bar.jpg)<!-- -->
 
 ```r
+tenure_table<- table(df$Tenure,df$Exited,dnn=c('Tenure','Churn'))
+round(prop.table(tenure_table,margin =2),4)*100 #col margin
+round(prop.table(tenure_table,margin =1),4)*100 #row margin
+chisq.test(df$Tenure,df$Exited,correct=FALSE)
 Tenure_churn<-ggplot(data=df)+
   geom_bar(mapping = aes(Tenure,fill=Exited),position='fill',width=0.5)+
   scale_x_discrete("Tenure")+
@@ -273,23 +342,18 @@ ggarrange(Tenure_churn,Tenure_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/tenure_bar.jpg)<!-- -->
+
 ## chi-square test of independence
 
 **Gender**
-
-
-
 ```r
 chisq.test(df$Gender,df$Exited,correct=FALSE)
 ```
 
 ```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  df$Gender and df$Exited
-## X-squared = 113.45, df = 1, p-value < 2.2e-16
+	Pearson's Chi-squared test
+data:  df$Gender and df$Exited
+X-squared = 113.45, df = 1, p-value < 2.2e-16
 ```
 
 **Credit Card**
