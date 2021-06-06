@@ -1,21 +1,20 @@
 ---
 layout: post
 title: "Bank Churn Prediction"
-subtitle: customer churn forcast using R
+subtitle: customer churn forecast using R
 background: '/img/posts/bankchurn/euro.jpg'
 ---
-This dataset was provided by [kaggle](https://www.kaggle.com/adammaus/predicting-churn-for-bank-customers){:target="_blank" rel="noopener"}.
 
 
-### Tools <br />
+This dataset was provided by [kaggle](https://www.kaggle.com/adammaus/predicting-churn-for-bank-customers){:target="_blank" rel="noopener"}.It contains customer information,banking products,member status and churn status.To predict whether customers stay or leave,we have to understand their behaviors and identify which patterns are the leaving signs.
+
+
+##### Tools <br />
 - R : ggplot,dplyr
 
+ <br />
 
-
-
-
-
-#### Data Description and Preparation
+#### Data Preparation
 ```r
 # install.packages("tidyverse")
 # install.packages("ggpubr")
@@ -32,26 +31,39 @@ library(dplyr)
 ```r
 df<-read.csv("Bank_Churn_Modelling.csv")
 str(df)
+
+print("null values: ")
+colSums(is.na(df)) 
 ```
 
+```r
+'data.frame':	10000 obs. of  14 variables:
+$ RowNumber      : int  1 2 3 4 5 6 7 8 9 10 ...
+$ CustomerId     : int  15634602 15647311 15619304 15701354  ...
+$ Surname        : chr  "Hargrave" "Hill" "Onio" "Boni" ...
+$ CreditScore    : int  619 608 502 699 850 645 822...
+$ Geography      : chr  "France" "Spain" "France" "France" ...
+$ Gender         : chr  "Female" "Female" "Female" "Female" ...
+$ Age            : int  42 41 42 39 43 44 50 29 44 27 ...
+$ Tenure         : int  2 1 8 1 2 8 7 4 4 2 ...
+$ Balance        : num  0 83808 159661 0 125511 ...
+$ NumOfProducts  : int  1 1 3 2 1 2 2 4 2 1 ...
+$ HasCrCard      : int  1 0 1 0 1 1 1 1 0 1 ...
+$ IsActiveMember : int  1 1 0 0 1 0 1 0 1 1 ...
+$ EstimatedSalary: num  101349 112543 113932 93827 79084 ...
+$ Exited         : int  1 0 1 0 0 1 0 1 0 0 ...
+
+[1] "null values: "
+CreditScore       Geography          Gender             Age     
+              0               0               0               0 
+Tenure            BalanceNum         OfProducts       HasCrCard 
+              0               0               0               0     
+IsActiveMember EstimatedSalary        Exited               
+              0               0               0              
+            
 ```
-## 'data.frame':	10000 obs. of  14 variables:
-##  $ RowNumber      : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ CustomerId     : int  15634602 15647311 15619304 15701354 15737888 15574012 15592531 15656148 15792365 15592389 ...
-##  $ Surname        : chr  "Hargrave" "Hill" "Onio" "Boni" ...
-##  $ CreditScore    : int  619 608 502 699 850 645 822 376 501 684 ...
-##  $ Geography      : chr  "France" "Spain" "France" "France" ...
-##  $ Gender         : chr  "Female" "Female" "Female" "Female" ...
-##  $ Age            : int  42 41 42 39 43 44 50 29 44 27 ...
-##  $ Tenure         : int  2 1 8 1 2 8 7 4 4 2 ...
-##  $ Balance        : num  0 83808 159661 0 125511 ...
-##  $ NumOfProducts  : int  1 1 3 2 1 2 2 4 2 1 ...
-##  $ HasCrCard      : int  1 0 1 0 1 1 1 1 0 1 ...
-##  $ IsActiveMember : int  1 1 0 0 1 0 1 0 1 1 ...
-##  $ EstimatedSalary: num  101349 112543 113932 93827 79084 ...
-##  $ Exited         : int  1 0 1 0 0 1 0 1 0 0 ...
-```
-For basic exploration, the data has no null value.Totally 14 variables was contained as char,int and num.Delete the unnessary variable like Row number ,Customer ID ,Surname).Transform the data to categorical by apply as.factor() with the selected variables as shown below.
+
+For basic exploration, the data has no null values.There are 14 variables contained as char,int and num.Start with remove unnecessary variables including Row number ,Customer ID ,Surname.Then,convert the categorical ones to factor as shown.
 
 ```r
 df <- df %>%
@@ -65,8 +77,21 @@ df <- df %>%
          Exited=as.factor(Exited))
 ```
 
+ 
 
+### Exploring Numerical variables
+The variables appear to be non-normally distributed.Age is right-skewed opposite to CreditScore that is a bit left.While Balance seem to be a normal distribution but has greatest frequency(mode) at 0 . The last, EstimateSalary is symmetical but not normality.
 
+![png](/img/posts/bankchurn/unnamed-chunk-5-1.png)<!-- -->
+```r
+CreditScore         Age           Balance       EstimatedSalary    
+ Min.   :350.0   Min.   :18.00   Min.   :     0   Min.   :    11.58  
+ 1st Qu.:584.0   1st Qu.:32.00   1st Qu.:     0   1st Qu.: 51002.11  
+ Median :652.0   Median :37.00   Median : 97199   Median :100193.91  
+ Mean   :650.5   Mean   :38.92   Mean   : 76486   Mean   :100090.24  
+ 3rd Qu.:718.0   3rd Qu.:44.00   3rd Qu.:127644   3rd Qu.:149388.25  
+ Max.   :850.0   Max.   :92.00   Max.   :250898   Max.   :199992.48 
+```
 
 ```r
 df %>%
@@ -75,16 +100,57 @@ df %>%
   ggplot(aes(value))+
     facet_wrap(~key,scales="free")+
     geom_histogram(bins=30,color='black')
+
+df%>%
+  keep(is.numeric)%>%summary()
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-5-1.png)<!-- -->
 
-## Categorical 
 
-**Gender**
+
+
+### Exploring Categorical variables
+
+**>> Exited (Churn)** <br />
+defined as predicted variable <br /><br />
+1 : churn <br />
+0 : non-churn 
+
+![png](/img/posts/bankchurn/exited_bar.jpg)<!-- -->
+```{r}
+ggplot(df,aes(Exited))+
+  geom_bar(fill=c("cornflowerblue","brown"),width=0.4)+
+  coord_flip()+
+  theme(aspect.ratio = 0.3)
+```
+
+**>> Gender**<br />
+This Bank has more male customers than female.Stretch out the bar plot and overlay churn on both categories,the diffences of churn proportion cleary appear that female customers tend to leave more frequently. According to the contingency table in row totals which indicates 25.07% of female churned as compared to male with 16.46%.However,most churners belong to male with 57.25% a bit different to non-churner 42.75%.
+
+![png](/img/posts/bankchurn/gender_bar.jpg)<!-- -->
+
+```
+*Two ways table(row totals)*
+        Churn
+Gender       0     1
+  Female 74.93 25.07
+  Male   83.54 16.46
+
+```
+```
+*Two ways table(column totals)*
+        Churn
+Gender       0     1
+  Female 42.75 55.92
+  Male   57.25 44.08
+```
 
 
 ```r
+gender_table<- table(df$Gender,df$Exited,dnn=c('Gender','Churn'))
+round(prop.table(gender_table,margin =2),4)*100 #col margin
+round(prop.table(gender_table,margin =1),4)*100 #row margin
+
 Gender_churn<-ggplot(data=df)+
   geom_bar(mapping = aes(Gender,fill=Exited),position='fill',width=0.5)+
   scale_x_discrete("Gender")+
@@ -102,7 +168,7 @@ ggarrange(Gender_churn, Gender_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-6-1.png)<!-- -->
+
 
 **Location**
 
@@ -123,7 +189,7 @@ ggarrange(Location_churn, Location_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-7-1.png)<!-- -->
+![png](/img/posts/bankchurn/location_bar.jpg)<!-- -->
 
 
 **Number of Products**
@@ -144,7 +210,7 @@ ggarrange(Product_churn, Product_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-8-1.png)<!-- -->
+![png](/img/posts/bankchurn/product_bar.jpg)<!-- -->
 
 **Credit Card**
 
@@ -166,7 +232,7 @@ ggarrange(Creditcard_churn, Creditcard_cat,
          ncol = 2, nrow = 1)    
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-9-1.png)<!-- -->
+![png](/img/posts/bankchurn/creditcard_bar.jpg)<!-- -->
 **Active Member**
 
 ```r
@@ -186,7 +252,7 @@ ggarrange(Active_churn, Active_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-10-1.png)<!-- -->
+![png](/img/posts/bankchurn/active_bar.jpg)<!-- -->
 
 **Tenure**
 
@@ -207,21 +273,12 @@ ggarrange(Tenure_churn,Tenure_cat,
          ncol = 2, nrow = 1)
 ```
 
-![png](/img/posts/bankchurn/unnamed-chunk-11-1.png)<!-- -->
+![png](/img/posts/bankchurn/tenure_bar.jpg)<!-- -->
 ## chi-square test of independence
 
 **Gender**
 
-```r
-table(df$Gender,df$Exited)
-```
 
-```
-##         
-##             0    1
-##   Female 3404 1139
-##   Male   4559  898
-```
 
 ```r
 chisq.test(df$Gender,df$Exited,correct=FALSE)
