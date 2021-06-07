@@ -366,7 +366,7 @@ ggarrange(Tenure_churn,Tenure_cat,
 
 Apply hypotheses Chi-square test to determine whether there is a significant association between churners and non-churners on each factor.
 
-The outcomes represent four variables including Gender,Num of Products,Active members and Locations are indeed useful for churn prediction ,the p-values of which are less than significance level at 0.05.Whereas Tenure and Credit Card have p-values considered significant that implies the lack of evident related to churn.
+The outcomes represent four variables including Gender,Num of Products,Active members and Locations are indeed useful for churn prediction ,the p-values of which are less than significance level at 0.05.Whereas Tenure and Credit Card have p-values considered significant and that implies the lack of evident related to churn.
 
 **Gender**
 ```
