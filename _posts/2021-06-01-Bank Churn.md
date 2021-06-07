@@ -362,11 +362,13 @@ ggarrange(Tenure_churn,Tenure_cat,
 ```
 
 
-### chi-square test of independence
-H0: The two variables are independent.
-H1: The two variables relate to each other.
-We have a chi-squared value of 5.5569. Since we get a p-Value less than the significance level of 0.05, we reject the null hypothesis and conclude that the two variables are in fact dependent.
-We have studied about chi-square tests and its parameters with the example in detail. These parameters with examples which we have discussed will help you to correlate with real-life examples based on chi-square-tests.
+### Testing hypotheses : chi-square test 
+use chi-square to determine whether there is a significant association between churners and non-churners on that factor.
+H0: The variables are independent.
+H1: The variables relate to each other.
+
+The tests represent four variables including Gender,Num of Products,Active members and Locations are indeed useful for churn prediction ,the p-values of which are less than the significance level(0.05).Whereas Tenure and Credit Card have p-values considered significant which implies the lack of evident association between churn and those two. 
+
 **Gender**
 ```
 Pearson's Chi-squared test
