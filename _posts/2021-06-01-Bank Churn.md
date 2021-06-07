@@ -93,21 +93,39 @@ CreditScore         Age           Balance       EstimatedSalary
  Max.   :850.0   Max.   :92.00   Max.   :250898   Max.   :199992.48 
 ```
 
-```r
+Customers at age around 40-50 have higher churn rate than younger. Possibly with their resposibility and maybe more expenses , it's the time to find the best offer preparing for life ,family or elses.It's kind of interesting that customers who have high balance rather leave bank, assume that they might have many accounts on others and just decide to choose the best beneficial one.For Credit score and Salary are not much  difference between churner and non-churner.
+
+
+![png](/img/posts/bankchurn/boxplot.png)<!-- -->
+
+
+```
+#histogram
 df %>%
   keep(is.numeric)%>%
   gather() %>%
   ggplot(aes(value))+
     facet_wrap(~key,scales="free")+
     geom_histogram(bins=30,color='black')
-
+#boxplot
+Age_box<-ggplot(data=df)+
+  geom_boxplot(mapping = aes(Exited,Age,fill=Exited),width=.5)+
+  scale_fill_manual(values=c("cornflowerblue","brown"))
+Balance_box<-ggplot(data=df)+
+  geom_boxplot(mapping = aes(Exited,Balance,fill=Exited),width=.5)+
+  scale_fill_manual(values=c("cornflowerblue","brown"))
+CreditScore_box<-ggplot(data=df)+
+  geom_boxplot(mapping = aes(Exited,CreditScore,fill=Exited),width=.5)+
+  scale_fill_manual(values=c("cornflowerblue","brown"))              
+EstimatedSalary_box<-ggplot(data=df)+
+  geom_boxplot(mapping = aes(Exited,EstimatedSalary,fill=Exited),width=.5)+
+  scale_fill_manual(values=c("cornflowerblue","brown"))
+ggarrange(Age_box,Balance_box, CreditScore_box,EstimatedSalary_box,
+         ncol = 2, nrow = 2,common.legend = TRUE)
+#descriptive
 df%>%
   keep(is.numeric)%>%summary()
 ```
-
-
-
-
 
 ### Exploring Categorical variables
 
@@ -172,11 +190,12 @@ ggarrange(Gender_churn, Gender_cat,
 
 **>> Location**
 
+Without concerning for other circumstances across countries, France and Spain branches have ability to hold customer retention as the small churn rate around 16%.While customers who live in Germany get twice at 32%.
+
 
 ![png](/img/posts/bankchurn/location_bar.jpg)<!-- -->
 
 
-*Contingency Table*
 ```
 *row totals*                    *column totals*
           Churn                           Churn
@@ -212,20 +231,17 @@ ggarrange(Location_churn, Location_cat,
 
 **>> Number of Products**
 
+Customers who involve in 2 products are the highest level of engagement at 92.42%.Although,holding 1 product is not bad but higher risk ,drop to 72.29%.Pay attention to the customers who have 3 or 4 products mostly churn at 82.71% and 100% respectively.Yes,totally 98% non-churners owned only one or two products.This is very curious about the products the banks have provided.
+
 ![png](/img/posts/bankchurn/product_bar.jpg)<!-- -->
 ```
-        Churn
-#Product     0     1
-       1 46.15 69.17
-       2 53.27 17.08
-       3  0.58 10.80
-       4  0.00  2.95
-        Churn
-#Product      0      1
-       1  72.29  27.71
-       2  92.42   7.58
-       3  17.29  82.71
-       4   0.00 100.00
+*row totals*                        *column totals*
+        Churn                                   Churn
+#Product      0      1              #Product     0     1
+       1  72.29  27.71                     1 46.15 69.17
+       2  92.42   7.58                     2 53.27 17.08
+       3  17.29  82.71                     3  0.58 10.80
+       4   0.00 100.00                     4  0.00  2.95
 ```
 ```r
 product_table<- table(df$NumOfProducts,df$Exited,dnn=c('#Product','Churn'))
@@ -246,54 +262,20 @@ ggarrange(Product_churn, Product_cat,
          ncol = 2, nrow = 1)
 ```
 
-
-
-**Credit Card**
-![png](/img/posts/bankchurn/creditcard_bar.jpg)<!-- -->
-```
-          Churn                             
-CreditCard     0     1
-         0 29.29 30.09
-         1 70.71 69.91
-          Churn
-CreditCard     0     1
-         0 79.19 20.81
-         1 79.82 20.18
-```
-```r
-creditcard_table<- table(df$HasCrCard,df$Exited,dnn=c('CreditCard','Churn'))
-round(prop.table(creditcard_table,margin =2),4)*100 #col margin
-round(prop.table(creditcard_table,margin =1),4)*100 #row margin
-Creditcard_churn<-ggplot(data=df)+
-  geom_bar(mapping = aes(factor(HasCrCard),fill=factor(Exited)),position='fill',width=0.5)+
-  scale_x_discrete("CreditCard")+
-  scale_y_continuous("Percent")+
-  guides(fill=guide_legend(title="Churn"))+
-  scale_fill_manual(values=c("cornflowerblue","brown"))+
-  theme(aspect.ratio = 1)
-  
-Creditcard_cat<-ggplot(df,aes(factor(HasCrCard)))+
-  geom_bar(width=0.5,fill='grey41')+
-  theme(legend.position = "left")+
-  theme(aspect.ratio = 0.8)
-
-ggarrange(Creditcard_churn, Creditcard_cat,
-         ncol = 2, nrow = 1)    
-```
-
-
 **Active Member**
+
+Non-active members are more likely leave the bank in comparative to active members.It is reasonable that non-active ones are the major group of churners at 63.92%.
+
 ![png](/img/posts/bankchurn/active_bar.jpg)<!-- -->
 
 ```
-      Churn
-Active     0     1
-     0 44.54 63.92
-     1 55.46 36.08
-      Churn
-Active     0     1
-     0 73.15 26.85
-     1 85.73 14.27
+*row totals*                        *column totals*         
+      Churn                                 Churn
+Active     0     1                   Active     0     1
+     0 73.15 26.85                        0 44.54 63.92
+     1 85.73 14.27                        1 55.46 36.08
+
+note: 0 for non-active , 1 for active
 ```
 
 ```r
@@ -318,7 +300,44 @@ ggarrange(Active_churn, Active_cat,
 
 
 
+**Credit Card**
+
+Base on an equal churn rate,there are no evidences with credit card to indicate the customer behaviors.
+However, the bank should find more solutions to retain credit card customers.
+
+![png](/img/posts/bankchurn/creditcard_bar.jpg)<!-- -->
+```
+*row totals*                           *column totals*           
+          Churn                                  Churn 
+CreditCard     0     1                  CreditCard     0     1
+         0 79.19 20.81                           0 29.29 30.09
+         1 79.82 20.18                           1 70.71 69.91
+```
+```r
+creditcard_table<- table(df$HasCrCard,df$Exited,dnn=c('CreditCard','Churn'))
+round(prop.table(creditcard_table,margin =2),4)*100 #col margin
+round(prop.table(creditcard_table,margin =1),4)*100 #row margin
+Creditcard_churn<-ggplot(data=df)+
+  geom_bar(mapping = aes(factor(HasCrCard),fill=factor(Exited)),position='fill',width=0.5)+
+  scale_x_discrete("CreditCard")+
+  scale_y_continuous("Percent")+
+  guides(fill=guide_legend(title="Churn"))+
+  scale_fill_manual(values=c("cornflowerblue","brown"))+
+  theme(aspect.ratio = 1)
+  
+Creditcard_cat<-ggplot(df,aes(factor(HasCrCard)))+
+  geom_bar(width=0.5,fill='grey41')+
+  theme(legend.position = "left")+
+  theme(aspect.ratio = 0.8)
+
+ggarrange(Creditcard_churn, Creditcard_cat,
+         ncol = 2, nrow = 1)    
+```
+
 **Tenure**
+
+Tenure groups, like Credit card ,also do not have any clues to predict the customers.
+
 ![png](/img/posts/bankchurn/tenure_bar.jpg)<!-- -->
 
 ```r
@@ -343,160 +362,56 @@ ggarrange(Tenure_churn,Tenure_cat,
 ```
 
 
-## chi-square test of independence
-
+### chi-square test of independence
+H0: The two variables are independent.
+H1: The two variables relate to each other.
+We have a chi-squared value of 5.5569. Since we get a p-Value less than the significance level of 0.05, we reject the null hypothesis and conclude that the two variables are in fact dependent.
+We have studied about chi-square tests and its parameters with the example in detail. These parameters with examples which we have discussed will help you to correlate with real-life examples based on chi-square-tests.
 **Gender**
-```r
-chisq.test(df$Gender,df$Exited,correct=FALSE)
 ```
-
-```
-	Pearson's Chi-squared test
+Pearson's Chi-squared test
 data:  df$Gender and df$Exited
 X-squared = 113.45, df = 1, p-value < 2.2e-16
 ```
 
 **Credit Card**
-
-
-```r
-table(df$HasCrCard,df$Exited)
 ```
-
-```
-##    
-##        0    1
-##   0 2332  613
-##   1 5631 1424
-```
-
-```r
-chisq.test(df$HasCrCard,df$Exited,correct=FALSE)
-```
-
-```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  df$HasCrCard and df$Exited
-## X-squared = 0.50948, df = 1, p-value = 0.4754
+Pearson's Chi-squared test
+data:  df$HasCrCard and df$Exited
+X-squared = 0.50948, df = 1, p-value = 0.4754
 ```
 **Num of Products**
-
-
-```r
-table(df$NumOfProducts,df$Exited)
 ```
-
+Pearson's Chi-squared test
+data:  df$NumOfProducts and df$Exited
+X-squared = 1503.6, df = 3, p-value < 2.2e-16
 ```
-##    
-##        0    1
-##   1 3675 1409
-##   2 4242  348
-##   3   46  220
-##   4    0   60
+**Active Member**
 ```
-
-```r
-chisq.test(df$NumOfProducts,df$Exited,correct=FALSE)
+Pearson's Chi-squared test
+data:  df$IsActiveMember and df$Exited
+X-squared = 243.76, df = 1, p-value < 2.2e-16
 ```
-
+**Location**
 ```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  df$NumOfProducts and df$Exited
-## X-squared = 1503.6, df = 3, p-value < 2.2e-16
+Pearson's Chi-squared test
+data:  df$Geography and df$Exited
+X-squared = 301.26, df = 2, p-value < 2.2e-16
 ```
-
-**Active Member*
-
-
-```r
-table(df$IsActiveMember,df$Exited)
-```
-
-```
-##    
-##        0    1
-##   0 3547 1302
-##   1 4416  735
-```
-
-```r
-chisq.test(df$IsActiveMember,df$Exited,correct=FALSE)
-```
-
-```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  df$IsActiveMember and df$Exited
-## X-squared = 243.76, df = 1, p-value < 2.2e-16
-```
-
-**Location*
-
-```r
-table(df$Geography,df$Exited)
-```
-
-```
-##          
-##              0    1
-##   France  4204  810
-##   Germany 1695  814
-##   Spain   2064  413
-```
-
-```r
-chisq.test(df$Geography,df$Exited,correct=FALSE)
-```
-
-```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  df$Geography and df$Exited
-## X-squared = 301.26, df = 2, p-value < 2.2e-16
-```
-
 **Tenure**
-
+```
+Pearson's Chi-squared test
+data:  df$Tenure and df$Exited
+X-squared = 13.9, df = 10, p-value = 0.1776
+```
 ```r
-table(df$Tenure,df$Exited)
-```
-
-```
-##     
-##        0   1
-##   0  318  95
-##   1  803 232
-##   2  847 201
-##   3  796 213
-##   4  786 203
-##   5  803 209
-##   6  771 196
-##   7  851 177
-##   8  828 197
-##   9  771 213
-##   10 389 101
-```
-
-```r
+chisq.test(df$Gender,df$Exited,correct=FALSE)
+chisq.test(df$HasCrCard,df$Exited,correct=FALSE)
+chisq.test(df$NumOfProducts,df$Exited,correct=FALSE)
+chisq.test(df$IsActiveMember,df$Exited,correct=FALSE)
+chisq.test(df$Geography,df$Exited,correct=FALSE)
 chisq.test(df$Tenure,df$Exited,correct=FALSE)
 ```
-
-```
-## 
-## 	Pearson's Chi-squared test
-## 
-## data:  df$Tenure and df$Exited
-## X-squared = 13.9, df = 10, p-value = 0.1776
-```
--c(HasCrCard,Tenure)
-
-
 
 ```r
 df_model <- df %>%
