@@ -82,7 +82,7 @@ df <- df %>%
 ### Exploring Numerical variables
 The variables appear to be non-normally distributed.Age is right-skewed opposite to CreditScore that is a bit left.While Balance seem to be a normal distribution but has greatest frequency(mode) at 0 . The last, EstimateSalary is symmetical but not normality.
 
-![png](/img/posts/bankchurn/unnamed-chunk-5-1.png)<!-- -->
+![png](/img/posts/bankchurn/numeric_hist.png)<!-- -->
 ```r
 CreditScore         Age           Balance       EstimatedSalary    
  Min.   :350.0   Min.   :18.00   Min.   :     0   Min.   :    11.58  
@@ -102,11 +102,12 @@ Customers at age around 40-50 have higher churn rate than younger. Possibly with
 ```
 #histogram
 df %>%
-  keep(is.numeric)%>%
-  gather() %>%
-  ggplot(aes(value))+
-    facet_wrap(~key,scales="free")+
-    geom_histogram(bins=30,color='black')
+  select(where(is.numeric),Exited)%>%
+  gather(key = "Variable", value = "Value",-Exited) %>%
+  ggplot(aes(Value,fill=Exited))+
+    facet_wrap(~Variable,scales="free")+
+    geom_histogram(bins=30,color='black')+
+    scale_fill_manual(values=c("cornflowerblue","brown"))
 #boxplot
 Age_box<-ggplot(data=df)+
   geom_boxplot(mapping = aes(Exited,Age,fill=Exited),width=.5)+
@@ -362,11 +363,11 @@ ggarrange(Tenure_churn,Tenure_cat,
 ```
 
 
-### Testing hypotheses : chi-square test 
+### Testing hypotheses : Chi-Square Test of Independence
 
-Apply hypotheses Chi-square test to determine whether there is a significant association between churners and non-churners on each factor.
+Apply hypotheses Chi-square test to determine whether there is a significant association between churn and each factor.
 
-The outcomes represent four variables including Gender,Num of Products,Active members and Locations are indeed useful for churn prediction ,the p-values of which are less than significance level at 0.05.Whereas Tenure and Credit Card have p-values considered significant and that implies the lack of evident related to churn.
+The outcomes represent four variables including Gender,Num of Products,Active members and Locations are indeed useful for churn prediction ,the p-values of which are less than significance level at 0.05.Whereas Tenure and Credit Card have p-values considered significant and that implies the lack of evident related to churning preference.
 
 **Gender**
 ```
