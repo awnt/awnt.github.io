@@ -63,7 +63,7 @@ IsActiveMember EstimatedSalary        Exited
             
 ```
 
-For basic exploration, the data has no null values.There are 14 variables contained as char,int and num.Start with remove unnecessary variables including Row number ,Customer ID ,Surname.Then,convert the categorical ones to factor as shown.
+For basic exploration, the data has no null values.There are 14 variables contained as char,int and num.Start with discard irrelevant variables including Row number ,Customer ID ,Surname.Then,convert the categorical variables to factor.
 
 ```r
 df <- df %>%
@@ -414,6 +414,125 @@ chisq.test(df$IsActiveMember,df$Exited,correct=FALSE)
 chisq.test(df$Geography,df$Exited,correct=FALSE)
 chisq.test(df$Tenure,df$Exited,correct=FALSE)
 ```
+
+
+
+```r
+library(caTools)
+set.seed(123)
+sample_data = sample.split(df_model, SplitRatio = 0.8)
+train_data <- subset(df_model, sample_data == TRUE)
+test_data <- subset(df_model, sample_data == FALSE)
+```
+#### Logistic regression
+**>> full model**
+```r
+#Logistic regression(full model)
+logis_full<- glm(Exited ~., data = train_data, family = binomial)
+summary(logis_full)
+anova(logis_full,test='Chisq')
+```
+```
+Call:
+glm(formula = Exited ~ ., family = binomial, data = train_data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.5329  -0.5855  -0.3638  -0.1792   3.2432  
+
+Coefficients:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)      -2.986e+00  2.785e-01 -10.721  < 2e-16 ***
+CreditScore      -5.757e-04  3.453e-04  -1.667   0.0955 .  
+GeographyGermany  9.618e-01  8.236e-02  11.678  < 2e-16 ***
+GeographySpain    5.169e-02  8.644e-02   0.598   0.5498    
+GenderMale       -5.007e-01  6.689e-02  -7.486 7.09e-14 ***
+Age               6.932e-02  3.142e-03  22.061  < 2e-16 ***
+Balance          -1.329e-07  6.462e-07  -0.206   0.8371    
+NumOfProducts2   -1.501e+00  8.029e-02 -18.696  < 2e-16 ***
+NumOfProducts3    2.685e+00  2.099e-01  12.791  < 2e-16 ***
+NumOfProducts4    1.635e+01  2.155e+02   0.076   0.9395    
+IsActiveMember1  -1.140e+00  7.102e-02 -16.054  < 2e-16 ***
+EstimatedSalary   2.482e-07  5.836e-07   0.425   0.6706    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7829.5  on 7777  degrees of freedom
+Residual deviance: 5771.7  on 7766  degrees of freedom
+AIC: 5795.7
+
+Number of Fisher Scoring iterations: 14
+
+Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: Exited
+
+Terms added sequentially (first to last)
+
+
+                Df Deviance Resid. Df Resid. Dev  Pr(>Chi)    
+NULL                             7777     7829.5              
+CreditScore      1     5.65      7776     7823.9   0.01742 *  
+Geography        2   245.94      7774     7577.9 < 2.2e-16 ***
+Gender           1    81.07      7773     7496.9 < 2.2e-16 ***
+Age              1   520.40      7772     6976.5 < 2.2e-16 ***
+Balance          1    35.92      7771     6940.5 2.057e-09 ***
+NumOfProducts    3   890.43      7768     6050.1 < 2.2e-16 ***
+IsActiveMember   1   278.27      7767     5771.8 < 2.2e-16 ***
+EstimatedSalary  1     0.18      7766     5771.7   0.67061    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+**result**
+```r
+result_full<-predict(logis_full,test_data,type="response")
+predict_full<-ifelse(result_full>0.5,"1","0")
+(confusion<-table(predict=predict_full,actual=test_data$Exited))
+mean(predict_full==test_data$Exited) #model accuracy
+```
+```
+    actual
+predict    0    1
+      0 1685  286
+      1   72  179
+[1] 0.8388839
+```
+
+**>> stepwise**
+```r
+library(MASS)
+logis_step <-logis_full %>% stepAIC(trace = FALSE)
+coef(logis_step)
+```
+```
+(Intercept)      CreditScore GeographyGermany   GeographySpain       GenderMale 
+   -2.9710715148    -0.0005778074     0.9562957227     0.0525487388    -0.5010858118 
+             Age   NumOfProducts2   NumOfProducts3   NumOfProducts4  IsActiveMember1 
+    0.0693303513    -1.4961551035     2.6911973442    16.3529508055    -1.1410892969 
+```
+
+**result**
+```r
+result_step <- predict(logis_step,test_data,type="response")
+predict_step <- ifelse(result_step >0.5,"1","0")
+table(Predict=predict_step,Actual=test_data$Exited)
+mean(predict_step==test_data$Exited)#accuracy
+```
+
+```
+      Actual
+Predict    0    1
+      0 1685  288
+      1   72  177
+[1] 0.8379838
+```
+
+
+
 
 ```r
 df_model <- df %>%
