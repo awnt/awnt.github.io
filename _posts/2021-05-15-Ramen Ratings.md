@@ -994,6 +994,6 @@ Japan has high market share with the largest number far from others.According to
 
 Respected to the flavours , Chicken is the most in-demand.This makes sense because the chicken's menu can be compatible with many religious conditions.Spicy ramens have a small amount accounted for twenty-five percent. Curry soups are very popular as there are many kinds of curry soup gathering from over the world.Tonkotsu remens are the second.Yakisoba and miso ramens come after them.By all means, the last three types are originally from Japan.
 
-## Future Improvement ##
+## Future Improvement 
 - Apply hypothesis tests to investigate which variables significantly affect to average scores,maybe one or more. First,I have planned to use ANOVA but the data appears in nonparametric with its skewness and free distribution.Kruskal-Wallis should be an appropriate method.
 - To do a ramen recommender system ,using some kinds of text algorithm.It must be a great start for NPL project.
