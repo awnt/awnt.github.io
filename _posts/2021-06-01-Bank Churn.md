@@ -552,3 +552,7 @@ No4. Location : find some solution to retain Germany customers
 
 ##### Future Improvement 
 - Plan to develop Decision tree model and study about model tuning.
+
+
+**reference textbook**
+- Discovering knowledge in data by Daneil T.Larose
