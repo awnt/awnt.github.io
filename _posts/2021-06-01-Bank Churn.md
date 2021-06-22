@@ -551,7 +551,7 @@ No4. Location : find some solution to retain Germany customers
 
 
 ##### Future Improvement 
-- Plan to develop Decision tree model and do model tuning.
+- Plan to develop Decision tree and tune model
 
 
 ###### reference textbook
