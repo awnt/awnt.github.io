@@ -540,7 +540,7 @@ Predict    0    1
 [1] 0.8379838
 ```
 The accuracy of full and partial model both are very closely.It is better for the model to have fewer predictors.
-I would prefer using the partial one to predict churn rate
+I would prefer to use the partial one to predict churn rate.
 
 The important variables which are triggers for churn : <br />
 No1. Number of Products: risk when the customer use more than two. <br />
