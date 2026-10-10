@@ -1,38 +1,35 @@
-
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: "default"
 
-title: "AWNT"        
-description:        Portfolio
-author:             AWNT
-baseurl:            ""
-url:                "https://awnt.github.io"
+title: "AWNT"
+description: "Portfolio"
+baseurl: ""
+url: "https://awnt.github.io"
 
-
+# Profile Sidebar Settings
 author:
   name: "AWNT"
-  bio: "Data Science & Analytics Portfolio"
+  bio: "Portfolio and Curiosity Space"
   # location: "Bangkok, Thailand"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/awnt"
-# Social Profiles
-github_username:    
-linkedin_username:
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/awasada"
 
-# Add your google-analytics ID here to activate google analytics
-# google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
+
 
 # Build settings
-remote_theme: mmistakes/minimal-mistakes
 markdown: kramdown
 kramdown:
   input: GFM
   syntax_highlighter: rouge
   parse_block_html: true
-paginate:           5
-paginate_path:      "/posts/page:num/"
+
+paginate: 5
+paginate_path: "/posts/page:num/"
 
 defaults:
   - scope:
@@ -47,6 +44,7 @@ defaults:
     values:
       layout: single
       author_profile: true
+
 plugins:
   - jekyll-remote-theme
   - jekyll-include-cache
