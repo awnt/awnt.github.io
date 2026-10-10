@@ -1,19 +1,19 @@
-title:              
-email:              
-description:        Data Blog and Portfolio
+
+remote_theme: mmistakes/minimal-mistakes
+minimal_mistakes_skin: "default"
+
+title: "AWNT"        
+description:        Portfolio
 author:             AWNT
 baseurl:            ""
 url:                "https://awnt.github.io"
 
 # Social Profiles
-twitter_username:   
 github_username:    
-facebook_username:  
-instagram_username:  
 linkedin_username:
 
 # Add your google-analytics ID here to activate google analytics
-google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
+# google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
 
 # Build settings
 remote_theme: mmistakes/minimal-mistakes
@@ -24,7 +24,23 @@ kramdown:
   parse_block_html: true
 paginate:           5
 paginate_path:      "/posts/page:num/"
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: single
+      author_profile: true
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: single
+      author_profile: true
 plugins:
+  - jekyll-remote-theme
+  - jekyll-include-cache
   - jekyll-feed
   - jekyll-paginate
-  - jekyll-sitemap ## Uncomment this line to silently generate a sitemaps.org compliant sitemap for your Jekyll site
+  - jekyll-sitemap
