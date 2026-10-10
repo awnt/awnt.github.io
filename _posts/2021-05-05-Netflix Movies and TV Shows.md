@@ -3,6 +3,7 @@ layout: post
 title: "Netflix TV Shows and Movies"
 subtitle: using python(data manipulate,EDA) and Tableau
 background: '/img/posts/netflix/netflix_title.jpg'
+published: false
 ---
 
 ## Data Description<br />
