@@ -8,6 +8,15 @@ author:             AWNT
 baseurl:            ""
 url:                "https://awnt.github.io"
 
+
+author:
+  name: "AWNT"
+  bio: "Data Science & Analytics Portfolio"
+  # location: "Bangkok, Thailand"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/awnt"
 # Social Profiles
 github_username:    
 linkedin_username:
