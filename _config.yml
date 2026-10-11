@@ -6,6 +6,8 @@ description: "Portfolio"
 baseurl: ""
 url: "https://awnt.github.io"
 
+# Site Favicon
+favicon: "/favicon.ico"
 # Profile Sidebar Settings
 author:
   name: "AWNT"
